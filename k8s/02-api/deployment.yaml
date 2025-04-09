@@ -18,6 +18,8 @@ spec:
       containers:
       - name: zahmaola-api
         image: ghcr.io/zahmaola/zahmaola-api:latest
+        imagePullSecrets:
+        - name: ghcr-secret
         envFrom:
         - secretRef:
               name: zahmaola-secrets
