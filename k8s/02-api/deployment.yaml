@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zahmaola-api
+  namespace: zahmaola
+  labels:
+    app: zahmaola-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: zahmaola-api
+  template:
+    metadata:
+      labels:
+        app: zahmaola-api
+    spec:
+      containers:
+      - name: zahmaola-api
+        image: ghcr.io/zahmaola/zahmaola-api:latest
+        envFrom:
+        - secretRef:
+              name: zahmaola-secrets
+        imagePullPolicy: Always
+
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+
+        ports:
+        - containerPort: 3000
+      serviceAccountName: default

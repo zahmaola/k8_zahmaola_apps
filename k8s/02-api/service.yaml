@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zahmaola-api-svc
+  namespace: zahmaola
+spec:
+  selector:
+    app: zahmaola-api
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 3000
+  type: ClusterIP
